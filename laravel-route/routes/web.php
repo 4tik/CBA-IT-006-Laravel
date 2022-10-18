@@ -49,29 +49,40 @@ Route::get('/gallery/{id?}', function($id = 'Gallery'){
     return view("gallery.show", ['passing_value' => $id]);
 })->name('gallery.show');
 
-Route::get('/posts/{id}', function($id){
-    $postsInfo = [
-        1 => [
-            'title' => 'Intro to Laravel',
-            'content' => 'This is a sshort intro to laravel',
-            'is_new' => true,
-            'has_comments' => true
-        ],
-        2 => [
-            'title' => 'Intro to PHP',
-            'content' => 'This is a short intro to PHP',
-            'is_new' => false,
-            'has-comments' => false
-        ],
-        3 => [
-            'title' => 'Intro to SQL',
-            'content' => 'This is a short intro to SQL',
-            'is_new' => TRUE,
-            'has-comments' => false
-        ]
-    ];
+$postsInfo = [
+    1 => [
+        'title' => 'Intro to Laravel',
+        'content' => 'This is a sshort intro to laravel',
+        'is_new' => true,
+        'has-comments' => true
+    ],
+    2 => [
+        'title' => 'Intro to PHP',
+        'content' => 'This is a short intro to PHP',
+        'is_new' => false,
+        'comments' => false
+    ],
+    3 => [
+        'title' => 'Intro to SQL',
+        'content' => 'This is a short intro to SQL',
+        'is_new' => TRUE,
+        'has-comments' => false
+    ]
+];
 
+
+//passing and rendering data
+Route::get('/posts/{id}', function($id) use ($postsInfo){
     abort_if(!isset($postsInfo[$id]), 404);
-
     return view('posts.show', ['post' => $postsInfo[$id]]);
 })->name('posts.show');
+
+
+//2022-10-18
+
+//single view rendering
+Route::view('/single-view', 'single.single_view')->name('single.single_view');
+
+Route::get('/posts', function() use ($postsInfo){
+    return view('posts.index', ['post' => $postsInfo]);
+})->name('posts.index');
