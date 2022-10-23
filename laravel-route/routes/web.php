@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Facades\Route;
+use PhpParser\Node\Stmt\Return_;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,3 +88,47 @@ Route::view('/single-view', 'single.single_view')->name('single.single_view');
 Route::get('/posts', function() use ($postsInfo){
     return view('posts.index', ['post' => $postsInfo]);
 })->name('posts.index');
+
+Route::get('/response', function() use ($postsInfo){
+    return response($postsInfo, 201)
+    ->header('Content-Type', 'application/json')
+    ->cookie('MY_COOKIE', 'Atikur Rahman', 3600);
+});
+
+Route::get('/redirct-functiion', function(){
+    return redirect('/about');
+});
+
+Route::get('/back-function', function(){
+    return back();
+});
+
+Route::get('/route-name', function(){
+    return redirect()->route('home.index');
+});
+
+Route::get('/route-away', function(){
+    return redirect()->away('https://icpc.global/login');
+});
+
+Route::get('/return-json', function() use ($postsInfo){
+    return response()->json($postsInfo);
+});
+
+Route::prefix('/group')->name('group')->group(function() use ($postsInfo){
+   
+    Route::get('/fun4', function() use ($postsInfo){
+        return response()->json($postsInfo);
+    });
+    
+      
+    Route::get('/fun1', function() use ($postsInfo){
+        return response()->json($postsInfo);
+    });Route::get('/fun2', function() use ($postsInfo){
+        return response()->json($postsInfo);
+    });
+    Route::get('/fun3', function() use ($postsInfo){
+        return response()->json($postsInfo);
+    });
+});
+
