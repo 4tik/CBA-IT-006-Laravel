@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\BlogPosts;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostsController;
+use App\Http\Controllers\SingleController;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Stmt\Return_;
@@ -19,12 +24,12 @@ use PhpParser\Node\Stmt\Return_;
 Route::get('/', function () {
     //response part
     return "Hello World";
-})->name('home.index');
+})->name('index');
 
 //default route
 Route::get('/about', function(){
     return "about laravel";
-})->name('home.about');
+})->name('about');
 
 //route with required parameter
 Route::get('/contact/{id}', function($id){
@@ -121,7 +126,6 @@ Route::prefix('/group')->name('group')->group(function() use ($postsInfo){
         return response()->json($postsInfo);
     });
     
-      
     Route::get('/fun1', function() use ($postsInfo){
         return response()->json($postsInfo);
     });Route::get('/fun2', function() use ($postsInfo){
@@ -132,3 +136,11 @@ Route::prefix('/group')->name('group')->group(function() use ($postsInfo){
     });
 });
 
+
+//Controller
+
+Route::get('/home', [HomeController::class, 'index'])->name('home.index');
+Route::get('/about', [HomeController::class, 'about'])->name('home.about');
+Route::get('/single-action', SingleController::class)->name('Single.Action');
+Route::resource('blog-posts', BlogPosts::class);
+Route::resource('book', BookController::class)->only('index','create', 'store');
